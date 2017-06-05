@@ -156,3 +156,18 @@ class ClientTestCase(APITestCase):
             users,
             list(sorted(users, key=lambda x: x.name))
         )
+
+    def test_mocks(self):
+        mock_users = [{
+            'id': 1,
+            'name': 'test'
+        }]
+        drest = DRESTClient(
+            'test',
+            client=MockSession(self.client),
+            mocks={
+                'users': mock_users
+            }
+        )
+        users = drest.users.list()
+        self.assertEquals(users, mock_users)

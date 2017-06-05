@@ -31,6 +31,19 @@ class DRESTClient(object):
                     defaults to 'sessionid'
             }
             Either username/password, token, or cookie should be provided.
+        mocks: if set, provides mocks for specific methods and resources.
+            For example, the mock:
+            {
+                'users': [{
+                    'id': 1,
+                    'name': 'Joe Smith'
+                }, {
+                    'id': 2,
+                    'name': 'John Smith'
+                }]
+            }
+            Would cause the client to short-circuit the API backend whenever
+            "users" are requested, returning only the two users specified.
 
     Examples:
 
@@ -90,7 +103,8 @@ class DRESTClient(object):
         version=None,
         client=None,
         scheme='https',
-        authentication=None
+        authentication=None,
+        mocks=None
     ):
         self._host = host
         self._version = version
@@ -100,6 +114,7 @@ class DRESTClient(object):
             'Accept': 'application/json'
         })
         self._resources = {}
+        self._mocks = mocks or {}
         self._scheme = scheme
         self._authenticated = True
         authentication = authentication or {}
@@ -123,6 +138,10 @@ class DRESTClient(object):
                 self._use_token(token)
             if cookie:
                 self._use_cookie(cookie)
+
+    @property
+    def mocks(self):
+        return self._mocks
 
     def __repr__(self):
         return '%s%s' % (

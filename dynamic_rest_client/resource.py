@@ -26,6 +26,11 @@ class DRESTResource(object):
             params: HTTP params
             data: HTTP data
         """
+        name = self.name
+        mocks = self._client.mocks.get(name)
+        if method.lower() == 'get' and mocks:
+            return {name: mocks}
+
         return self._client.request(
             method,
             self._get_url(id),
