@@ -51,6 +51,7 @@ class DRESTClient(object):
             }
             Would cause the client to short-circuit the API backend whenever
             "users" are requested, returning only the two users specified.
+        verbose: if set, prints requests and responses to the command line
 
     Examples:
 
