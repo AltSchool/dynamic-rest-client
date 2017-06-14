@@ -31,6 +31,9 @@ install: $(INSTALL_DIR)
 	$(call header,"Installing")
 	@$(INSTALL_DIR)/bin/python setup.py -q develop
 
+shell: install
+	@$(INSTALL_DIR)/bin/python
+
 # Install/update dependencies
 # Runs whenever the requirements.txt file changes
 $(INSTALL_DIR): $(INSTALL_DIR)/bin/activate
