@@ -8,6 +8,14 @@ class DRESTRecord(object):
         self._resource = resource
         self._load(data)
 
+    def delete(self):
+        id = self.id
+        self._resource.request(
+            'delete',
+            id=id,
+        )
+        self.id = None
+
     def save(self):
         id = self.id
         new = not id

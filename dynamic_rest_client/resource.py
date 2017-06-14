@@ -1,3 +1,4 @@
+import inflection
 from .query import DRESTQuery
 from .record import DRESTRecord
 
@@ -11,7 +12,7 @@ class DRESTResource(object):
         name: a resource's name
     """
     def __init__(self, client, name):
-        self.name = name.lower()
+        self.name = inflection.underscore(name)
         self._client = client
 
     def __repr__(self):

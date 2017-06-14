@@ -47,7 +47,9 @@ class ClientTestCase(APITestCase):
 
     def setUp(self):
         self.fixture = create_fixture()
-        self.drest = DRESTClient('test', client=MockSession(self.client))
+        self.drest = DRESTClient(
+            'test', client=MockSession(self.client)
+        )
 
     def test_get_all(self):
         users = self.drest.Users.all().list()
@@ -149,6 +151,13 @@ class ClientTestCase(APITestCase):
         user2 = self.drest.Users.filter(name='foo').first()
         self.assertIsNotNone(user2)
         self.assertEquals(user2.id, user.id)
+
+    def test_delete(self):
+        user = self.drest.Users.first()
+        id = user.id
+        user.delete()
+        self.assertIsNone(user.id)
+        self.assertIsNone(self.drest.Users.filter(id=id).first())
 
     def test_sort(self):
         users = self.drest.Users.sort('name').list()

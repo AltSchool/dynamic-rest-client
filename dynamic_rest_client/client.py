@@ -1,6 +1,13 @@
 import json
 import requests
-from .exceptions import AuthenticationFailed, BadRequest, DoesNotExist
+import urllib
+import pprint
+from .exceptions import (
+    AuthenticationFailed,
+    BadRequest,
+    DoesNotExist,
+    Unauthorized
+)
 from .resource import DRESTResource
 
 
@@ -104,7 +111,8 @@ class DRESTClient(object):
         client=None,
         scheme='https',
         authentication=None,
-        mocks=None
+        mocks=None,
+        verbose=False
     ):
         self._host = host
         self._version = version
@@ -116,6 +124,7 @@ class DRESTClient(object):
         self._resources = {}
         self._mocks = mocks or {}
         self._scheme = scheme
+        self._verbose = verbose
         self._authenticated = True
         authentication = authentication or {}
         self._authentication = authentication
@@ -214,20 +223,44 @@ class DRESTClient(object):
 
     def request(self, method, url, params=None, data=None):
         self._authenticate()
+        url = self._build_url(url, prefix=self._version)
+        if self._verbose:
+            print '-> %s %s%s' % (
+                method.upper(),
+                url,
+                '?%s' % urllib.urlencode(params) if params else ''
+            )
+            if data:
+                pprint.pprint(data)
+
         response = self._client.request(
             method,
-            self._build_url(url, prefix=self._version),
+            url,
             params=params,
             data=data
         )
 
-        if response.status_code == 401:
-            raise AuthenticationFailed()
+        content = response.content.decode('utf-8')
+        status = response.status_code
+        try:
+            decoded = json.loads(content)
+        except:
+            decoded = content
 
-        if response.status_code == 404:
-            raise DoesNotExist()
+        if self._verbose:
+            print '<- (%d)' % status
+            pprint.pprint(decoded)
 
-        if response.status_code >= 400:
-            raise BadRequest()
+        if status == 401:
+            raise AuthenticationFailed(content)
 
-        return json.loads(response.content.decode('utf-8'))
+        if status == 404:
+            raise DoesNotExist(content)
+
+        if status == 403:
+            raise Unauthorized(content)
+
+        if status >= 400:
+            raise BadRequest(content)
+
+        return decoded
