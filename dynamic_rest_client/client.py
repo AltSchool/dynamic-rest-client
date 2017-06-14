@@ -1,6 +1,5 @@
 import json
 import requests
-import urllib
 import pprint
 from .exceptions import (
     AuthenticationFailed,
@@ -9,6 +8,12 @@ from .exceptions import (
     Unauthorized
 )
 from .resource import DRESTResource
+import urllib
+try:
+    urlencode = urllib.urlencode
+except:
+    # Py3
+    urlencode = urllib.parse.urlencode
 
 
 class DRESTClient(object):
@@ -229,7 +234,7 @@ class DRESTClient(object):
             print '-> %s %s%s' % (
                 method.upper(),
                 url,
-                '?%s' % urllib.urlencode(params) if params else ''
+                '?%s' % urlencode(params) if params else ''
             )
             if data:
                 pprint.pprint(data)
@@ -238,7 +243,7 @@ class DRESTClient(object):
             method,
             url,
             params=params,
-            data=data
+            data=json.dumps(data)
         )
 
         content = response.content.decode('utf-8')

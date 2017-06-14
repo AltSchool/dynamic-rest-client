@@ -1,3 +1,4 @@
+import json
 from rest_framework.test import APITestCase, APIClient
 from dynamic_rest_client import DRESTClient
 from dynamic_rest_client.exceptions import (
@@ -15,7 +16,7 @@ except:
 
 class MockSession(object):
 
-    """requests.session compatiability adapter for DRESTClient."""
+    """requests.session compatibility adapter for DRESTClient."""
 
     def __init__(self, client):
         self._client = client or APIClient()
@@ -37,6 +38,8 @@ class MockSession(object):
             url,
             ('?%s' % make_params(params)) if params else ''
         )
+        if data and isinstance(data, string_types):
+            data = json.loads(data)
         response = getattr(self._client, method)(url, data=data)
         content = response.content.decode('utf-8')
         response.content = content
