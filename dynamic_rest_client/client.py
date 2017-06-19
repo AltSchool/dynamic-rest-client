@@ -1,3 +1,4 @@
+import copy
 import json
 import requests
 import pprint
@@ -128,7 +129,9 @@ class DRESTClient(object):
             'Accept': 'application/json'
         })
         self._resources = {}
-        self._mocks = mocks or {}
+        self._mocks = {}
+        if mocks:
+            self._mocks = copy.deepcopy(mocks)
         self._scheme = scheme
         self._verbose = verbose
         self._authenticated = True

@@ -72,6 +72,8 @@ class ClientTestCase(APITestCase):
         pk = fixed_user.pk
         user = self.drest.Users.get(pk)
         self.assertEquals(user.name, fixed_user.name)
+        # test dict get
+        self.assertEquals(user['name'], fixed_user.name)
 
     def test_get_include(self):
         users = self.drest.Users.including('location.*').list()

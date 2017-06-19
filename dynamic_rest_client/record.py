@@ -39,6 +39,9 @@ class DRESTRecord(object):
         else:
             raise DoesNotExist()
 
+    def __getitem__(self, key):
+        return self.__dict__.__getitem__(key)
+
     @property
     def dict(self):
         return self._get_data()
