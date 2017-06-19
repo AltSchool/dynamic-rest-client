@@ -115,11 +115,25 @@ class ClientTestCase(APITestCase):
         user = self.drest.Users.first()
         self.assertTrue(user.name, 'foo')
 
+        user['name'] = 'bar'
+        user.save()
+        user = self.drest.Users.first()
+        self.assertTrue(user['name'], 'bar')
+
     def test_create(self):
         user = self.drest.Users.create(
             name='foo',
             last_name='bar'
         )
+        self.assertIsNotNone(user.id)
+
+    def test_init_record(self):
+        user = self.drest.Users(
+            name='bar',
+            last_name='foo'
+        )
+        self.assertIsNone(user.id)
+        user.save()
         self.assertIsNotNone(user.id)
 
     def test_invalid_resource(self):

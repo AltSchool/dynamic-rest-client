@@ -42,6 +42,9 @@ class DRESTRecord(object):
     def __getitem__(self, key):
         return self.__dict__.__getitem__(key)
 
+    def __setitem__(self, key, value):
+        return self.__dict__.__setitem__(key, value)
+
     @property
     def dict(self):
         return self._get_data()
