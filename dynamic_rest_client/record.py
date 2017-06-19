@@ -39,6 +39,10 @@ class DRESTRecord(object):
         else:
             raise DoesNotExist()
 
+    @property
+    def dict(self):
+        return self._get_data()
+
     def __eq__(self, other):
         if hasattr(other, '_get_data'):
             other = other._get_data()

@@ -182,4 +182,4 @@ class ClientTestCase(APITestCase):
             }
         )
         users = drest.users.list()
-        self.assertEquals(users, mock_users)
+        self.assertEquals([u.dict for u in users], mock_users)

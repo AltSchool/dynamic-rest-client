@@ -39,7 +39,7 @@ class DRESTResource(object):
             data=data
         )
 
-    def load(self, data):
+    def load(self, data, depth=0):
         """Loads data to an internal representation.
 
         Arguments:
@@ -49,14 +49,18 @@ class DRESTResource(object):
         """
         if isinstance(data, dict):
             meta = data.get('_meta', {})
+            # get type from metadata
             name = meta.get('type')
-            pk = meta.get('id')
+            if not depth and not name:
+                # fallback to current name if at depth 0
+                name = self.name
+            pk = meta.get('id', data.get('id'))
             if name and pk:
                 # load from dict
                 data['id'] = pk
                 if name == self.name:
                     for key, value in data.items():
-                        loaded = self.load(value)
+                        loaded = self.load(value, depth+1)
                         if value != loaded:
                             data[key] = loaded
                     return DRESTRecord(resource=self, **data)
@@ -69,7 +73,7 @@ class DRESTResource(object):
         elif isinstance(data, list) and not isinstance(data, str):
             for i, value in enumerate(data):
                 # load from list
-                _value = self.load(value)
+                _value = self.load(value, depth)
                 if value != _value:
                     data[i] = _value
             return data
