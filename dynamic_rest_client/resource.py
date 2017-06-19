@@ -18,6 +18,9 @@ class DRESTResource(object):
     def __repr__(self):
         return self.name
 
+    def __call__(self, **kwargs):
+        return DRESTRecord(resource=self, **kwargs)
+
     def request(self, method, id=None, params=None, data=None):
         """Perform a request against this resource.
 
@@ -81,7 +84,7 @@ class DRESTResource(object):
             return data
 
     def create(self, **kwargs):
-        record = DRESTRecord(resource=self, **kwargs)
+        record = self(**kwargs)
         record.save()
         return record
 
