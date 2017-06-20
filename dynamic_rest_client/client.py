@@ -1,3 +1,4 @@
+import inflection
 import copy
 import json
 import requests
@@ -184,7 +185,7 @@ class DRESTClient(object):
         })
 
     def __getattr__(self, key):
-        key = key.lower()
+        key = inflection.underscore(key)
         return self._resources.get(key, DRESTResource(self, key))
 
     def _login(self, raise_exception=True):
