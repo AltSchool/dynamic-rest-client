@@ -246,7 +246,7 @@ class DRESTClient(object):
             method,
             url,
             params=params,
-            data=json.dumps(data)
+            data=json.dumps(data) if data else None
         )
 
         content = response.content.decode('utf-8')
