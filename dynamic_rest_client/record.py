@@ -1,6 +1,6 @@
 from .utils import unpack
 from .exceptions import DoesNotExist
-
+import copy
 
 class DRESTRecord(object):
 
@@ -83,7 +83,7 @@ class DRESTRecord(object):
         for key, value in data.items():
             setattr(self, key, value)
 
-        self._clean = self._get_data()
+        self._clean = copy.deepcopy(self._get_data())
         self.id = data.get('_meta', {}).get('id', data.get('id', None))
 
     def _serialize(self, data):
