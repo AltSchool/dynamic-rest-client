@@ -1,6 +1,8 @@
 from .utils import unpack
 from .exceptions import DoesNotExist
 import copy
+from six import string_types
+
 
 class DRESTRecord(object):
 
@@ -79,11 +81,29 @@ class DRESTRecord(object):
             )
         )
 
+    def __deepcopy__(self, memo):
+        data = self.__dict__
+        new_data = self._get_data()
+        for key, value in memo.items():
+            new_value = data.get(key)
+            if isinstance(new_value, dict):
+                if value != new_value:
+                    new_value = copy.copy(new_value)
+                    new_value.update(value)
+            elif (
+                isinstance(new_value, (list, tuple)) and
+                not isinstance(new_value, string_types)
+            ):
+                if value != new_value:
+                    new_value = list(set(new_value + list(value)))
+            new_data[key] = new_value
+        return new_data
+
     def _load(self, data):
         for key, value in data.items():
             setattr(self, key, value)
 
-        self._clean = copy.deepcopy(self._get_data())
+        self._clean = copy.deepcopy(self)
         self.id = data.get('_meta', {}).get('id', data.get('id', None))
 
     def _serialize(self, data):
