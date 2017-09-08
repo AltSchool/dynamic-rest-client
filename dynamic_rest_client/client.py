@@ -157,6 +157,11 @@ class DRESTClient(object):
                 self._use_token(token)
             if cookie:
                 self._use_cookie(cookie)
+            self._authenticate(raise_exception=False)
+
+    @property
+    def authenticated(self):
+        return self._authenticated
 
     @property
     def mocks(self):
@@ -170,7 +175,6 @@ class DRESTClient(object):
 
     def _use_token(self, value):
         self._token = value
-        self._authenticated = bool(value)
         self._client.headers.update({
             'Authorization': '%s %s' % (
                 self._token_type, self._token if value else ''
@@ -179,7 +183,6 @@ class DRESTClient(object):
 
     def _use_cookie(self, value):
         self._cookie = value
-        self._authenticated = bool(value)
         self._client.headers.update({
             'Cookie': '%s=%s' % (self._cookie_name, value)
         })
@@ -208,16 +211,16 @@ class DRESTClient(object):
         if raise_exception:
             response.raise_for_status()
 
-        self._use_cookie(response.cookies.get(self._cookie_name))
+        cookie = response.cookies.get(self._cookie_name)
+        if cookie:
+            self._use_cookie(cookie)
+            self._authenticated = True
 
     def _authenticate(self, raise_exception=True):
-        response = None
         if not self._authenticated:
             self._login(raise_exception)
         if raise_exception and not self._authenticated:
-            raise AuthenticationFailed(
-                response.text if response else 'Unknown error'
-            )
+            raise AuthenticationFailed('DRest client failed to authenticate')
         return self._authenticated
 
     def _build_url(self, url, prefix=None):
