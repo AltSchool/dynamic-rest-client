@@ -1,3 +1,4 @@
+from __future__ import absolute_import
 from collections import namedtuple
 
 from tests.models import (
@@ -11,6 +12,7 @@ from tests.models import (
     User,
     Zebra
 )
+from six.moves import range
 
 
 def create_fixture():

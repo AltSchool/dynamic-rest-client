@@ -1,3 +1,4 @@
+from __future__ import absolute_import
 from .utils import unpack
 from .exceptions import DoesNotExist
 import copy

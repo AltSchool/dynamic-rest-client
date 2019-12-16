@@ -1,3 +1,4 @@
+from __future__ import absolute_import
 from rest_framework.serializers import CharField
 
 from dynamic_rest.fields import (

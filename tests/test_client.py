@@ -1,3 +1,4 @@
+from __future__ import absolute_import
 import json
 from rest_framework.test import APITestCase, APIClient
 from dynamic_rest_client import DRESTClient
@@ -6,12 +7,7 @@ from dynamic_rest_client.exceptions import (
 )
 from six import string_types
 from tests.setup import create_fixture
-import urllib
-try:
-    urlencode = urllib.urlencode
-except:
-    # Py3
-    urlencode = urllib.parse.urlencode
+from six.moves.urllib.parse import urlencode
 
 
 class MockSession(object):
