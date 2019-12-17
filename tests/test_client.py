@@ -196,4 +196,8 @@ class ClientTestCase(APITestCase):
             }
         )
         users = drest.users.list()
-        self.assertEquals([u.dict for u in users], mock_users)
+        try:
+            mus = [u.dict for u in users]
+        except AttributeError:
+            mus = [u for u in users]
+        self.assertEquals(mus, mock_users)
