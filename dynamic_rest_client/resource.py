@@ -1,3 +1,4 @@
+from __future__ import absolute_import
 import inflection
 from .query import DRESTQuery
 from .record import DRESTRecord

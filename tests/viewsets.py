@@ -1,3 +1,4 @@
+from __future__ import absolute_import
 from rest_framework import exceptions
 
 from dynamic_rest.viewsets import DynamicModelViewSet

@@ -1,3 +1,5 @@
+from __future__ import absolute_import
+from __future__ import print_function
 import inflection
 import copy
 import json
@@ -10,12 +12,7 @@ from .exceptions import (
     Unauthorized
 )
 from .resource import DRESTResource
-import urllib
-try:
-    urlencode = urllib.urlencode
-except:
-    # Py3
-    urlencode = urllib.parse.urlencode
+from six.moves.urllib.parse import urlencode
 
 
 class DRESTClient(object):
@@ -236,11 +233,11 @@ class DRESTClient(object):
         self._authenticate()
         url = self._build_url(url, prefix=self._version)
         if self._verbose:
-            print '-> %s %s%s' % (
+            print('-> %s %s%s' % (
                 method.upper(),
                 url,
                 '?%s' % urlencode(params) if params else ''
-            )
+            ))
             if data:
                 pprint.pprint(data)
 
@@ -259,7 +256,7 @@ class DRESTClient(object):
             decoded = content
 
         if self._verbose:
-            print '<- (%d)' % status
+            print('<- (%d)' % status)
             pprint.pprint(decoded)
 
         if status == 401:

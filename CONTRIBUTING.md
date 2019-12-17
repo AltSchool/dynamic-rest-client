@@ -14,6 +14,7 @@ For additional details, see our [Python style guide](https://github.com/AltSchoo
 ## Tests
 
 Use `make test` to lint and run all unit tests (runs in a few seconds).
+Run `tox` to run tests against Python 2.7 and Python 3.6
 
 We recommend linting regularly, testing with every commit, and running tests against all combinations before submitting a pull request.
 

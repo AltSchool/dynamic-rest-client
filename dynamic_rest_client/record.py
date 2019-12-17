@@ -1,3 +1,4 @@
+from __future__ import absolute_import
 from .utils import unpack
 from .exceptions import DoesNotExist
 import copy
@@ -26,6 +27,8 @@ class DRESTRecord(object):
             else self._serialize(self._get_diff())
         )
         if data:
+            if new:
+                data.pop('id', None)
             response = self._resource.request(
                 'post' if new else 'patch',
                 id=id,
