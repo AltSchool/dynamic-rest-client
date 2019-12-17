@@ -27,6 +27,8 @@ class DRESTRecord(object):
             else self._serialize(self._get_diff())
         )
         if data:
+            if new:
+                data.pop('id', None)
             response = self._resource.request(
                 'post' if new else 'patch',
                 id=id,
