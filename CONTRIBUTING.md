@@ -27,6 +27,19 @@ Any related issues in Dynamic REST, Django REST Framework, or Django should incl
 # Publishing
 
 (PyPi and repository write access required)
+Make sure you have a `~/.pypirc` file that contains the following:
+```
+[distutils]
+index-servers =
+  pypi
+  pypitest
+
+[pypi]
+repository=https://upload.pypi.org/legacy/
+
+[pypitest]
+repository=https://test.pypi.org/legacy/
+```
 
 Before releasing:
 
