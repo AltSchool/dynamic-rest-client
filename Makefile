@@ -9,14 +9,17 @@ endef
 
 .PHONY: docs
 
-pypi_upload_test: install
+pypi_upload_test: install build
 	$(call header,"Uploading new version to PyPi - test")
-	@. $(INSTALL_DIR)/bin/activate; python setup.py sdist upload -r pypitest
+	@. $(INSTALL_DIR)/bin/activate; twine upload --repository pypitest dist/*
 
-pypi_upload: install
+pypi_upload: install build
 	$(call header,"Uploading new version to PyPi")
-	@. $(INSTALL_DIR)/bin/activate; python setup.py sdist upload -r pypi
+	@. $(INSTALL_DIR)/bin/activate; twine upload --repository pypi dist/*
 
+build: install
+	$(call header,"Building the package")
+	@. $(INSTALL_DIR)/bin/activate; python setup.py sdist
 # Build/install the app
 # Runs on every command
 install: $(INSTALL_DIR)
