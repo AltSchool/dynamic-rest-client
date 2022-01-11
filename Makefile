@@ -64,3 +64,7 @@ lint: clean_working_directory
 format: clean_working_directory
 	$(call header,"Auto-formatting code")
 	@find $(APP_NAME) -type f -name '*.py' | xargs $(INSTALL_DIR)/bin/flake8 | sed -E 's/^([^:]*\.py).*/\1/g' | uniq | xargs autopep8 --experimental -a --in-place
+
+tox:
+	pip install -U tox==3.24.5; \
+	tox --develop

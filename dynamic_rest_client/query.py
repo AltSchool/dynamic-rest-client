@@ -167,7 +167,7 @@ class DRESTQuery(object):
                 if self._page == self._pages:
                     # end of results
                     self._reset()
-                    raise StopIteration()
+                    return
                 self._get_page(params)
 
             yield self._data[self._index]
