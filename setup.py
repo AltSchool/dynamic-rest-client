@@ -1,10 +1,9 @@
-from __future__ import absolute_import
 from setuptools import find_packages, setup
 
 NAME = 'dynamic-rest-client'
 DESCRIPTION = 'Python client for dynamic-rest with minimal dependencies'
 URL = 'http://github.com/AltSchool/dynamic-rest-client'
-VERSION = '0.1.8'
+VERSION = '0.1.9'
 SCRIPTS = []
 
 setup(
