@@ -1,4 +1,3 @@
-from __future__ import absolute_import
 import json
 from rest_framework.test import APITestCase, APIClient
 from dynamic_rest_client import DRESTClient

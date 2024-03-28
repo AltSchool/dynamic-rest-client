@@ -68,3 +68,7 @@ format: clean_working_directory
 tox:
 	pip install -U tox==4.14.2 virtualenv-pyenv==0.5.0; \
 	tox --develop
+
+migrations: install
+	$(call header,"Creating test app migrations")
+	$(INSTALL_DIR)/bin/python manage.py makemigrations --settings=tests.settings
