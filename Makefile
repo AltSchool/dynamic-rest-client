@@ -11,11 +11,11 @@ endef
 
 pypi_upload_test: install build
 	$(call header,"Uploading new version to PyPi - test")
-	@. $(INSTALL_DIR)/bin/activate; twine upload --repository pypitest dist/*
+	@. $(INSTALL_DIR)/bin/activate; pip install twine; twine upload --repository testpypi dist/*
 
 pypi_upload: install build
 	$(call header,"Uploading new version to PyPi")
-	@. $(INSTALL_DIR)/bin/activate; twine upload --repository pypi dist/*
+	@. $(INSTALL_DIR)/bin/activate; pip install twine; twine upload --repository dynamic-rest-client dist/*
 
 build: install
 	$(call header,"Building the package")
