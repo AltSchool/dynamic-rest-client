@@ -35,7 +35,7 @@ $(INSTALL_DIR): $(INSTALL_DIR)/bin/activate
 $(INSTALL_DIR)/bin/activate: requirements.txt install_requires.txt
 	$(call header,"Updating dependencies")
 	@test -d $(INSTALL_DIR) || virtualenv $(INSTALL_DIR)
-	@$(INSTALL_DIR)/bin/pip install -q --upgrade pip==18.1 setuptools flake8==2.4.0
+	@$(INSTALL_DIR)/bin/pip install -q --upgrade pip==24.0 setuptools flake8==7.0.0
 	@$(INSTALL_DIR)/bin/pip install -Ur requirements.txt
 	@touch $(INSTALL_DIR)/bin/activate
 
@@ -66,5 +66,9 @@ format: clean_working_directory
 	@find $(APP_NAME) -type f -name '*.py' | xargs $(INSTALL_DIR)/bin/flake8 | sed -E 's/^([^:]*\.py).*/\1/g' | uniq | xargs autopep8 --experimental -a --in-place
 
 tox:
-	pip install -U tox==3.24.5; \
+	pip install -U tox==4.14.2 virtualenv-pyenv==0.5.0; \
 	tox --develop
+
+migrations: install
+	$(call header,"Creating test app migrations")
+	$(INSTALL_DIR)/bin/python manage.py makemigrations --settings=tests.settings

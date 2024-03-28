@@ -1,4 +1,3 @@
-from __future__ import absolute_import
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
@@ -18,7 +17,7 @@ class User(models.Model):
         'favorite_pet_type',
         'favorite_pet_id',
     )
-    is_dead = models.NullBooleanField(default=False)
+    is_dead = models.BooleanField(null=True, default=False)
 
 
 class Profile(models.Model):
