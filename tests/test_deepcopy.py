@@ -15,6 +15,6 @@ class DeepcopyTestCase(APITestCase):
         kitkat = Cat(name='KitKat', home=home, parent=papa)
         kitkat_clone = copy.deepcopy(kitkat)
 
-        self.assertEquals(kitkat.name, kitkat_clone.name)
-        self.assertEquals(kitkat.home.name, kitkat_clone.home.name)
-        self.assertEquals(kitkat.parent.name, kitkat_clone.parent.name)
+        self.assertEqual(kitkat.name, kitkat_clone.name)
+        self.assertEqual(kitkat.home.name, kitkat_clone.home.name)
+        self.assertEqual(kitkat.parent.name, kitkat_clone.parent.name)
