@@ -1,4 +1,3 @@
-from __future__ import absolute_import
 import json
 from rest_framework.test import APITestCase, APIClient
 from dynamic_rest_client import DRESTClient
@@ -52,35 +51,35 @@ class ClientTestCase(APITestCase):
 
     def test_get_all(self):
         users = self.drest.Users.all().list()
-        self.assertEquals(len(users), len(self.fixture.users))
-        self.assertEquals(
+        self.assertEqual(len(users), len(self.fixture.users))
+        self.assertEqual(
             {user.name for user in users},
             {user.name for user in self.fixture.users}
         )
 
     def test_get_filter(self):
         users = self.drest.Users.filter(id=self.fixture.users[0].id).list()
-        self.assertEquals(1, len(users))
-        self.assertEquals(users[0].name, self.fixture.users[0].name)
+        self.assertEqual(1, len(users))
+        self.assertEqual(users[0].name, self.fixture.users[0].name)
 
     def test_get_one(self):
         fixed_user = self.fixture.users[0]
         pk = fixed_user.pk
         user = self.drest.Users.get(pk)
-        self.assertEquals(user.name, fixed_user.name)
+        self.assertEqual(user.name, fixed_user.name)
         # test dict get
-        self.assertEquals(user['name'], fixed_user.name)
-        self.assertEquals(user.get('name'), fixed_user.name)
-        self.assertEquals(user.get('foobar'), None)
+        self.assertEqual(user['name'], fixed_user.name)
+        self.assertEqual(user.get('name'), fixed_user.name)
+        self.assertEqual(user.get('foobar'), None)
 
     def test_get_include(self):
         users = self.drest.Users.including('location.*').list()
-        self.assertEquals(users[0].location.name, '0')
+        self.assertEqual(users[0].location.name, '0')
 
     def test_get_map(self):
         users = self.drest.Users.map()
         id = self.fixture.users[0].pk
-        self.assertEquals(users[id].id, id)
+        self.assertEqual(users[id].id, id)
 
     def test_get_exclude(self):
         user = self.fixture.users[0]
@@ -104,7 +103,7 @@ class ClientTestCase(APITestCase):
     def test_get_excluding(self):
         users = self.drest.Users.excluding('*').map()
         pk = self.fixture.users[0].pk
-        self.assertEquals(users[pk].id, pk)
+        self.assertEqual(users[pk].id, pk)
 
     def test_update(self):
         user = self.drest.Users.first()
@@ -153,7 +152,7 @@ class ClientTestCase(APITestCase):
     def test_extra_pagination(self):
         users = list(self.drest.Users.all().extra(per_page=1))
         users2 = list(self.drest.Users.all())
-        self.assertEquals(users, users2)
+        self.assertEqual(users, users2)
 
         name = users[0].name
         users_named = list(self.drest.Users.extra(name=name))
@@ -167,7 +166,7 @@ class ClientTestCase(APITestCase):
 
         user2 = self.drest.Users.filter(name='foo').first()
         self.assertIsNotNone(user2)
-        self.assertEquals(user2.id, user.id)
+        self.assertEqual(user2.id, user.id)
 
     def test_delete(self):
         user = self.drest.Users.first()
@@ -178,7 +177,7 @@ class ClientTestCase(APITestCase):
 
     def test_sort(self):
         users = self.drest.Users.sort('name').list()
-        self.assertEquals(
+        self.assertEqual(
             users,
             list(sorted(users, key=lambda x: x.name))
         )
@@ -200,4 +199,4 @@ class ClientTestCase(APITestCase):
             mus = [u.dict for u in users]
         except AttributeError:
             mus = [u for u in users]
-        self.assertEquals(mus, mock_users)
+        self.assertEqual(mus, mock_users)
